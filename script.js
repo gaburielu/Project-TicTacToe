@@ -1,36 +1,51 @@
 const gameBoard = (function () {
+  const gridItems = document.querySelectorAll(".grid-item");
+  const resetButton = document.getElementById("reset");
   let ticTacToeBoard = Array(9).fill("");
   let round = 0;
+  let roundIsActive = true;
 
-  function playRound() {}
+  function playRound(){
+    gridItems.forEach((item, index) => {
+        item.addEventListener("click", () => {
+          addMark(index);
+        });
+      });
+    resetButton.addEventListener("click", resetBoard);
+  }
 
   function addMark(index) {
-    if (ticTacToeBoard[index] === "") {
-      ticTacToeBoard[index] = getCurrentPlayer();
-      checkCondition();
-      round++;
-      render();
+    if (roundIsActive) {
+      if (ticTacToeBoard[index] === "") {
+        ticTacToeBoard[index] = getCurrentPlayer();
+        checkCondition();
+        round++;
+        render();
+      }
     }
   }
+
 
   function resetBoard() {
     ticTacToeBoard = Array(9).fill("");
     round = 0;
+    roundIsActive = true;
+    render();
   }
 
   function render() {
-    console.log(ticTacToeBoard.slice(0, 3).join(" | "));
-    console.log("---------");
-    console.log(ticTacToeBoard.slice(3, 6).join(" | "));
-    console.log("---------");
-    console.log(ticTacToeBoard.slice(6).join(" | "));
+    gridItems.forEach((item, index) => {
+      item.textContent = ticTacToeBoard[index];
+    });
   }
 
-  function lockBoard() {}
-
-  function returnBoard() {
-    return ticTacToeBoard.slice();
+  function lockBoard() {
+    roundIsActive = false;
   }
+
+//   function returnBoard() {
+//     return ticTacToeBoard.slice();
+//   }
 
   function getCurrentPlayer() {
     if (round % 2 === 0) {
@@ -39,6 +54,8 @@ const gameBoard = (function () {
       return "O";
     }
   }
+
+  function drawBoard(event) {}
 
   function checkCondition() {
     if (
@@ -71,9 +88,12 @@ const gameBoard = (function () {
       lockBoard();
     }
   }
+
+  playRound();
+
   return {
     addMark: addMark,
-    returnBoard: returnBoard,
+    // returnBoard: returnBoard,
     resetBoard: resetBoard,
     render: render,
   };
