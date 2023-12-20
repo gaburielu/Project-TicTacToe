@@ -74,6 +74,8 @@ body {
   place-items: center;
   box-sizing: border-box;
   font-family:"PottaOne-Regular";
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .active {
